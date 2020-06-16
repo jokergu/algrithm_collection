@@ -85,9 +85,25 @@ static void _get_element_address(void **ppe, uint32_t index, void *base, uint32_
 
 static void _swap_element(void *e1, void *e2, uint32_t size)
 {
-    uint8_t temp[TEMP_MAX_SIZE];
+    // uint8_t temp[TEMP_MAX_SIZE];
 
-    memcpy(temp, e1, size);
-    memcpy(e1, e2, size);
-    memcpy(e2, temp, size);   
+    // if(size > TEMP_MAX_SIZE)
+    // {
+    //     return;
+    // }
+
+    // memcpy(temp, e1, size);
+    // memcpy(e1, e2, size);
+    // memcpy(e2, temp, size);  
+
+    uint32_t i;
+    uint8_t *pe1, *pe2;
+    for(i = 0; i < size; i++)
+    {
+        pe1 = (uint8_t *)((uint32_t)e1 + i);
+        pe2 = (uint8_t *)((uint32_t)e2 + i);
+        (*pe1) ^= (*pe2);
+        (*pe2) ^= (*pe1);
+        (*pe1) ^= (*pe2);
+    } 
 }

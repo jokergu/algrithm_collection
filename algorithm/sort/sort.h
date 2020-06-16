@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 /* 排序所需的最大临时大小 */
-#define TEMP_MAX_SIZE    8
+// #define TEMP_MAX_SIZE    8
 
 typedef int (*COMPARE)(const void *e1, const void *e2);
 
