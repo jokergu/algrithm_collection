@@ -1,5 +1,6 @@
 #include "sort.h"
 #include <string.h>
+#include <stdlib.h>
 
 static void _get_element_address(void **ppe, uint32_t index, void *base, uint32_t size);
 static void _swap_element(void *e1, void *e2, uint32_t size);
@@ -76,6 +77,66 @@ void select_sort(void *base, uint32_t nmemb, uint32_t size, COMPARE compare)
     }    
 }
 
+/**
+  * @brief  插入排序
+  * @param  base: 数组首地址指针
+  * @param  nmemb: 元素个数
+  * @param  size: 元素大小
+  * @param  compare: 元素比较函数
+  * @retval  无
+  * @note  时间复杂度: O(n^2)
+  */
+void insert_sort(void *base, uint32_t nmemb, uint32_t size, COMPARE compare)
+{
+#if 0
+    int i, j;
+    void *e1, *e2;
+    for(i = 1; i < nmemb; i++)
+    {
+        for(j = i; j > 0; j--)
+        {
+            _get_element_address(&e1, j - 1, base, size);
+            _get_element_address(&e2, j, base, size);
+            if(compare(e1, e2) > 0)
+            {
+                _swap_element(e1, e2, size);
+            }
+            else
+            {
+                break;
+            }
+            
+        }
+    }
+#else
+    int i, j;
+    void *e1, *e2;
+    uint8_t *temp = malloc(size);
+    for(i = 1; i < nmemb; i++)
+    {
+        _get_element_address(&e1, i, base, size);
+        memcpy(temp, e1, size);
+
+        for(j = i; j > 0; j--)
+        {
+            _get_element_address(&e1, j - 1, base, size);
+            _get_element_address(&e2, j, base, size);
+            if(compare(e1, temp) > 0)
+                memcpy(e2, e1, size);
+            else
+            {
+                break;
+            }
+        }
+        if(compare(e1, temp) > 0)
+            memcpy(e1, temp, size);
+        else
+            memcpy(e2, temp, size);
+    }
+    free(temp);
+#endif
+}
+
 /* 私有函数 -------------------------------------------------------------------------- */
 
 static void _get_element_address(void **ppe, uint32_t index, void *base, uint32_t size)
@@ -85,17 +146,6 @@ static void _get_element_address(void **ppe, uint32_t index, void *base, uint32_
 
 static void _swap_element(void *e1, void *e2, uint32_t size)
 {
-    // uint8_t temp[TEMP_MAX_SIZE];
-
-    // if(size > TEMP_MAX_SIZE)
-    // {
-    //     return;
-    // }
-
-    // memcpy(temp, e1, size);
-    // memcpy(e1, e2, size);
-    // memcpy(e2, temp, size);  
-
     uint32_t i;
     uint8_t *pe1, *pe2;
     for(i = 0; i < size; i++)

@@ -112,5 +112,23 @@ TEST_F(ALGTest, SelectSortIntTest)
     EXPECT_EQ(0, memcmp(array, sort_array, sizeof(array)));
 }
 
+/**
+ * @brief 测试插入排序对整型数排序时的行为
+ */
+TEST_F(ALGTest, InsertSortIntTest)
+{    
+    int array[] = {5, 2, 7, 12, 3, 1, 9, 2};
+    const int sort_array[] = {1, 2, 2, 3, 5, 7, 9, 12};
+    const int memb_num = sizeof(array) / sizeof(array[0]);
+    const int size = sizeof(array[0]);
+
+    printf("%d, %d, %d, %d, %d, %d, %d, %d\n", array[0], array[1], array[2], array[3],
+        array[4], array[5], array[6], array[7]);
+    insert_sort(array, memb_num, size, comp_int);
+    printf("%d, %d, %d, %d, %d, %d, %d, %d\n", array[0], array[1], array[2], array[3],
+        array[4], array[5], array[6], array[7]);
+    EXPECT_EQ(0, memcmp(array, sort_array, sizeof(array)));
+}
+
 
 } /* namespace */
